@@ -47,17 +47,20 @@ jobs:
             fi
             rm -f /var/www/html/gweiermann.de/.write-test
 
-      - name: Deploy to server via SSH
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: github
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          source: "dist"
-          target: "/var/www/html/gweiermann.de"
-          strip_components: 1
-          overwrite: true
+      - name: Deploy to server via rsync (same as local SCP)
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -p $SSH_PORT" \
+            dist/ \
+            github@$SSH_HOST:/var/www/html/gweiermann.de/
 
       - name: Verify deployment
         uses: appleboy/ssh-action@v1.0.3
