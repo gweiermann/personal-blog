@@ -36,16 +36,6 @@ jobs:
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             mkdir -p /var/www/html/gweiermann.de
-            echo "Current user: $(whoami)"
-            echo "Directory listing:"
-            ls -la /var/www/html/
-            ls -la /var/www/html/gweiermann.de/ 2>/dev/null || true
-            if ! touch /var/www/html/gweiermann.de/.write-test 2>/dev/null; then
-              echo "ERROR: github user cannot write to /var/www/html/gweiermann.de"
-              echo "On the server (as root) run: sudo chown -R github:www-data /var/www/html/gweiermann.de"
-              exit 1
-            fi
-            rm -f /var/www/html/gweiermann.de/.write-test
 
       - name: Deploy to server via rsync (same as local SCP)
         env:
