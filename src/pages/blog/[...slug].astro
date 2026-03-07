@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import { site } from '../../config/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} | ${site.name}`} description={post.data.description}>
+  <div class="max-w-3xl mx-auto px-6 py-16">
+    <!-- Back Link -->
+    <a
+      href="/blog"
+      class="inline-flex items-center gap-2 text-sm text-black/60 hover:text-black mb-12"
+    >
+      ← Back to Blog
+    </a>
+
+    <!-- Header -->
+    <header class="mb-12 pb-12 border-b border-black/10">
+      <p class="text-xs uppercase tracking-wider text-black/40 mb-4">
+        {post.data.category} · {post.data.publishDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        {post.data.readTimeMinutes ? ` · ${post.data.readTimeMinutes} min read` : ''}
+      </p>
+      <h1 class="text-5xl font-serif leading-tight mb-6">
+        {post.data.title}
+      </h1>
+    </header>
+
+    <!-- Content -->
+    <article class="prose-custom [&_h2]:text-2xl [&_h2]:font-serif [&_h2]:mt-12 [&_h2]:mb-6 [&_p]:text-lg [&_p]:leading-relaxed [&_p]:text-black/80 [&_p]:mb-6">
+      <Content />
+    </article>
+
+    <!-- Footer -->
+    <div class="mt-16 pt-12 border-t border-black/10">
+      <a
+        href="/blog"
+        class="inline-flex items-center gap-2 text-sm uppercase tracking-wider hover:underline"
+      >
+        View All Posts →
+      </a>
+    </div>
+  </div>
+</BaseLayout>

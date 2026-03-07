@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../../config/site';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => Number(b.data.year) - Number(a.data.year)
+);
+---
+
+<BaseLayout title={`Projects | ${site.name}`} description={site.projects.metaDescription}>
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <!-- Header -->
+    <div class="mb-16 pb-8 border-b border-black/10">
+      <h1 class="text-5xl font-serif mb-4">Projects</h1>
+      <p class="text-lg text-black/60 max-w-2xl">
+        {site.projects.pageDescription}
+      </p>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="grid gap-16">
+      {projects.map((project, index) => (
+        <div>
+          <a
+            href={project.data.link ?? '#'}
+            class="group grid grid-cols-3 gap-12 items-start"
+          >
+            <!-- Visual -->
+            <div class="aspect-[4/3] bg-black/5 overflow-hidden">
+              <div
+                class="w-full h-full group-hover:scale-105 transition-transform duration-500"
+                style={`background: linear-gradient(${45 + index * 40}deg, rgba(0,0,0,${0.03 + index * 0.015}), rgba(0,0,0,${0.08 + index * 0.015}))`}
+              />
+            </div>
+
+            <!-- Content -->
+            <div class="col-span-2">
+              <div class="flex items-start justify-between mb-4">
+                <div>
+                  <h2 class="text-3xl font-serif mb-2 group-hover:underline">
+                    {project.data.title}
+                  </h2>
+                  <p class="text-xs uppercase tracking-wider text-black/40">
+                    {project.data.year}
+                  </p>
+                </div>
+              </div>
+
+              <p class="text-lg text-black/70 leading-relaxed mb-6">
+                {project.data.description}
+              </p>
+
+              <div class="flex flex-wrap gap-2">
+                {project.data.tags.map((tag) => (
+                  <span
+                    class="px-3 py-1 text-xs uppercase tracking-wider border border-black/20 text-black/60"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </a>
+
+          {index < projects.length - 1 && (
+            <div class="h-px bg-black/10 mt-16"></div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <!-- Additional Info -->
+    <div class="mt-24 pt-12 border-t border-black/10">
+      <p class="text-black/60 leading-relaxed max-w-2xl">
+        {site.projects.footerNote.beforeGithub}
+        <a href={site.links.github} class="underline hover:text-black">
+          GitHub
+        </a>
+        {site.projects.footerNote.afterGithubBeforeContact}
+        <a href={site.links.contact} class="underline hover:text-black">
+          reach out
+        </a>
+        {site.projects.footerNote.afterContact}
+      </p>
+    </div>
+  </div>
+</BaseLayout>

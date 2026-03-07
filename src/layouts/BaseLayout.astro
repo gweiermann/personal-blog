@@ -1,0 +1,99 @@
+---
+import '../styles/global.css';
+import { site, getCopyright } from '../config/site';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Portfolio' } = Astro.props;
+
+const linkHighlight = (path: string) => {
+  if (Astro.url.pathname.startsWith(path) && (path !== '/' || Astro.url.pathname === '/')) {
+    return 'text-black';
+  }
+  return 'text-black/50 hover:text-black';
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="min-h-screen bg-white">
+      <!-- Header -->
+      <header class="border-b border-black/10">
+        <div class="max-w-6xl mx-auto px-6 py-8">
+          <div class="flex items-center justify-between">
+            <a href="/" class="group">
+              <h1 class="text-2xl font-serif italic tracking-tight">
+                {site.name}
+              </h1>
+            </a>
+            <nav class="flex gap-8">
+              <a
+                href="/"
+                class:list={[
+                  'text-sm uppercase tracking-wider transition-colors',
+                  linkHighlight('/'),
+                ]}
+              >
+                Home
+              </a>
+              <a
+                href="/blog"
+                class:list={[
+                  'text-sm uppercase tracking-wider transition-colors',
+                  linkHighlight('/blog'),
+                ]}
+              >
+                Blog
+              </a>
+              <a
+                href="/projects"
+                class:list={[
+                  'text-sm uppercase tracking-wider transition-colors',
+                  linkHighlight('/projects'),
+                ]}
+              >
+                Projects
+              </a>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main>
+        <slot />
+      </main>
+
+      <!-- Footer -->
+      <footer class="border-t border-black/10 mt-24">
+        <div class="max-w-6xl mx-auto px-6 py-12">
+          <div class="flex justify-between items-center">
+            <p class="text-sm text-black/50">
+              {getCopyright()}
+            </p>
+            <div class="flex gap-6">
+              <a href={site.links.github} class="text-sm text-black/50 hover:text-black transition-colors">
+                GitHub
+              </a>
+              <a href={site.links.linkedin} class="text-sm text-black/50 hover:text-black transition-colors">
+                LinkedIn
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
