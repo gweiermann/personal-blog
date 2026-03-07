@@ -22,24 +22,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Extract branch name
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BRANCH_NAME="${{ github.head_ref }}"
-          else
-            BRANCH_NAME="${{ github.ref_name }}"
-          fi
-          # Sanitize branch name (replace / with -)
-          BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/\//-/g')
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-
       - name: Build static site
         env:
           NODE_ENV: production
         run: npm run build
 
-      - name: Create deployment directory
+      - name: Create deployment directory and verify write access
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -48,6 +36,16 @@ jobs:
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             mkdir -p /var/www/html/gweiermann.de
+            echo "Current user: $(whoami)"
+            echo "Directory listing:"
+            ls -la /var/www/html/
+            ls -la /var/www/html/gweiermann.de/ 2>/dev/null || true
+            if ! touch /var/www/html/gweiermann.de/.write-test 2>/dev/null; then
+              echo "ERROR: github user cannot write to /var/www/html/gweiermann.de"
+              echo "On the server (as root) run: sudo chown -R github:www-data /var/www/html/gweiermann.de"
+              exit 1
+            fi
+            rm -f /var/www/html/gweiermann.de/.write-test
 
       - name: Deploy to server via SSH
         uses: appleboy/scp-action@v0.1.7
@@ -59,7 +57,7 @@ jobs:
           source: "dist"
           target: "/var/www/html/gweiermann.de"
           strip_components: 1
-          rm: false
+          overwrite: true
 
       - name: Verify deployment
         uses: appleboy/ssh-action@v1.0.3
