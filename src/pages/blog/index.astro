@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { site } from '../../config/site';
 
@@ -29,7 +30,17 @@ const rest = blogPosts.slice(1);
         <a href={`/blog/${featured.id}`} class="group">
           <div class="grid grid-cols-2 gap-12 items-center">
             <div class="aspect-[3/2] bg-black/5 overflow-hidden">
-              <div class="w-full h-full bg-gradient-to-br from-black/5 to-black/10 group-hover:scale-105 transition-transform duration-500"></div>
+              {featured.data.thumbnail ? (
+                <Image
+                  src={featured.data.thumbnail}
+                  alt=""
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  widths={[600, 900, 1200]}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : (
+                <div class="w-full h-full bg-gradient-to-br from-black/5 to-black/10 group-hover:scale-105 transition-transform duration-500"></div>
+              )}
             </div>
             <div>
               <p class="text-xs uppercase tracking-wider text-black/40 mb-3">
@@ -67,10 +78,20 @@ const rest = blogPosts.slice(1);
             <a href={`/blog/${post.id}`} class="group">
               <div class="grid grid-cols-3 gap-8 items-start">
                 <div class="aspect-[4/3] bg-black/5 overflow-hidden">
-                  <div
-                    class="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                    style={`background: linear-gradient(${135 + index * 30}deg, rgba(0,0,0,0.05), rgba(0,0,0,0.1))`}
-                  />
+                  {post.data.thumbnail ? (
+                    <Image
+                      src={post.data.thumbnail}
+                      alt=""
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      widths={[400, 600, 800]}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  ) : (
+                    <div
+                      class="w-full h-full group-hover:scale-105 transition-transform duration-500"
+                      style={`background: linear-gradient(${135 + index * 30}deg, rgba(0,0,0,0.05), rgba(0,0,0,0.1))`}
+                    />
+                  )}
                 </div>
                 <div class="col-span-2">
                   <p class="text-xs uppercase tracking-wider text-black/40 mb-3">
