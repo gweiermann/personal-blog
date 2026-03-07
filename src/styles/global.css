@@ -5,6 +5,7 @@
 :root {
   --font-serif: 'Libre Baskerville', serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-weight-medium: 500;
 }
 
 @theme inline {
@@ -23,5 +24,9 @@
 
   body {
     @apply bg-white text-black font-sans;
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: var(--font-weight-medium);
   }
 }
