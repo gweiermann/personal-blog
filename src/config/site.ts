@@ -25,6 +25,11 @@ export const site = {
     headline: 'Building at the intersection of technology and art',
     intro:
       "I'm a computer scientist with a passion for creating beautiful, functional experiences. My work explores the boundary between code and creativity, combining technical precision with artistic expression.",
+    /** Featured work shown on the home page. List project or blog slugs in the order you want them displayed. */
+    featuredWork: [
+      { type: 'project', slug: 'generative-art-engine' },
+      { type: 'blog', slug: 'vue-ssr-postprocessing-cms' },
+    ],
   },
 
   /** Blog section */

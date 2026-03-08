@@ -8,6 +8,21 @@ const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
 );
 const recentPosts = posts.slice(0, 3);
+
+const projects = await getCollection('projects');
+const projectsById = Object.fromEntries(projects.map((p) => [p.id, p]));
+const postsById = Object.fromEntries(posts.map((p) => [p.id, p]));
+
+const featuredItems = (site.home.featuredWork ?? [])
+  .map((item) => {
+    if (item.type === 'project') {
+      const project = projectsById[item.slug];
+      return project ? { type: 'project' as const, entry: project } : null;
+    }
+    const post = postsById[item.slug];
+    return post ? { type: 'blog' as const, entry: post } : null;
+  })
+  .filter(Boolean);
 ---
 
 <BaseLayout title={site.name} description={site.tagline}>
@@ -51,31 +66,38 @@ const recentPosts = posts.slice(0, 3);
       </div>
 
       <div class="grid grid-cols-2 gap-12">
-        <a href="/projects" class="group">
-          <div class="aspect-[4/3] bg-black/5 mb-4 overflow-hidden">
-            <div class="w-full h-full bg-gradient-to-br from-black/10 to-black/5 group-hover:scale-105 transition-transform duration-500"></div>
-          </div>
-          <h4 class="text-xl font-serif mb-2 group-hover:underline font-bold">
-            Generative Art Engine
-          </h4>
-          <p class="text-black/60 leading-relaxed">
-            An algorithmic art system that creates unique visual compositions
-            using noise functions and cellular automata.
-          </p>
-        </a>
-
-        <a href="/projects" class="group">
-          <div class="aspect-[4/3] bg-black/5 mb-4 overflow-hidden">
-            <div class="w-full h-full bg-gradient-to-br from-black/5 to-black/10 group-hover:scale-105 transition-transform duration-500"></div>
-          </div>
-          <h4 class="text-xl font-serif mb-2 group-hover:underline font-bold">
-            Typography Experiments
-          </h4>
-          <p class="text-black/60 leading-relaxed">
-            A collection of interactive typographic compositions exploring
-            kinetic text and responsive letterforms.
-          </p>
-        </a>
+        {featuredItems.map((item, i) => {
+          if (!item) return null;
+          const href = item.type === 'project' ? `/projects/${item.entry.id}` : `/blog/${item.entry.id}`;
+          const title = item.entry.data.title;
+          const description = item.entry.data.description;
+          const gradientClass = i % 2 === 0
+            ? 'bg-gradient-to-br from-black/10 to-black/5'
+            : 'bg-gradient-to-br from-black/5 to-black/10';
+          return (
+            <a href={href} class="group">
+              <div class="aspect-[4/3] bg-black/5 mb-4 overflow-hidden">
+                {item.type === 'blog' && item.entry.data.thumbnail ? (
+                  <Image
+                    src={item.entry.data.thumbnail}
+                    alt=""
+                    class={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500`}
+                    widths={[400, 800]}
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                  />
+                ) : (
+                  <div class={`w-full h-full ${gradientClass} group-hover:scale-105 transition-transform duration-500`} />
+                )}
+              </div>
+              <h4 class="text-xl font-serif mb-2 group-hover:underline font-bold">
+                {title}
+              </h4>
+              <p class="text-black/60 leading-relaxed">
+                {description}
+              </p>
+            </a>
+          );
+        })}
       </div>
     </section>
 
@@ -98,7 +120,7 @@ const recentPosts = posts.slice(0, 3);
                     <Image
                       src={post.data.thumbnail}
                       alt=""
-                      class="w-full h-full group-hover:scale-105 transition-transform duration-500"
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       widths={[112, 224]}
                       sizes="112px"
                     />
