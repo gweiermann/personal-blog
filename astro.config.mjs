@@ -7,6 +7,11 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
     site: 'https://gweiermann.de',
     integrations: [mdx()],
+    markdown: {
+        shikiConfig: {
+            theme: 'github-light',
+        },
+    },
     vite: {
         plugins: [tailwindcss()],
     },
