@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 220" font-family="system-ui, sans-serif" font-size="13">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="currentColor"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <!-- Server / Reverse proxy + SSR -->
+  <rect x="20" y="40" width="160" height="100" rx="8" fill="var(--fill, #f0f4f8)" stroke="var(--stroke, #c9d1d9)" filter="url(#shadow)"/>
+  <text x="100" y="68" text-anchor="middle" font-weight="600">Reverse proxy + SSR</text>
+  <text x="100" y="92" text-anchor="middle" fill="var(--muted, #57606a)">Two outputs</text>
+  <!-- Output 1: Rendered HTML -->
+  <rect x="40" y="105" width="70" height="28" rx="4" fill="var(--accent-fill, #ddf4ff)" stroke="var(--accent, #0969da)"/>
+  <text x="75" y="122" text-anchor="middle" font-size="11">Rendered HTML</text>
+  <text x="75" y="132" text-anchor="middle" font-size="10" fill="var(--muted, #57606a)">(in document)</text>
+  <!-- Output 2: Template string -->
+  <rect x="120" y="105" width="70" height="28" rx="4" fill="var(--accent-fill, #ddf4ff)" stroke="var(--accent, #0969da)"/>
+  <text x="155" y="118" text-anchor="middle" font-size="11">Unrendered</text>
+  <text x="155" y="130" text-anchor="middle" font-size="11">template string</text>
+  <!-- Arrows to client -->
+  <path d="M180 80 L260 80" stroke="var(--stroke, #c9d1d9)" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M180 140 L260 140" stroke="var(--stroke, #c9d1d9)" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="220" y="75" text-anchor="middle" font-size="10" fill="var(--muted, #57606a)">HTML</text>
+  <text x="220" y="135" text-anchor="middle" font-size="10" fill="var(--muted, #57606a)">e.g. window.SSR_TEMPLATE</text>
+  <!-- Client -->
+  <rect x="260" y="40" width="160" height="100" rx="8" fill="var(--fill, #f0f4f8)" stroke="var(--stroke, #c9d1d9)" filter="url(#shadow)"/>
+  <text x="340" y="68" text-anchor="middle" font-weight="600">Client</text>
+  <rect x="280" y="78" width="120" height="50" rx="4" fill="var(--success-fill, #dafbe1)" stroke="var(--success, #1a7f37)"/>
+  <text x="340" y="98" text-anchor="middle" font-size="11">Same template</text>
+  <text x="340" y="112" text-anchor="middle" font-size="11">used for</text>
+  <text x="340" y="126" text-anchor="middle" font-size="11">hydration</text>
+  <!-- Label at bottom -->
+  <text x="260" y="200" text-anchor="middle" font-size="12" fill="var(--muted, #57606a)">Hydration needs the unrendered app template; server sends it as a string.</text>
+</svg>

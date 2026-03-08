@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" font-family="system-ui, sans-serif" font-size="13">
+  <defs>
+    <marker id="arrow3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="currentColor"/>
+    </marker>
+    <filter id="shadow3" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <!-- Inputs -->
+  <rect x="40" y="20" width="100" height="36" rx="6" fill="#ddf4ff" stroke="#0969da"/>
+  <text x="90" y="42" text-anchor="middle">SSR HTML</text>
+  <rect x="340" y="20" width="100" height="36" rx="6" fill="#ddf4ff" stroke="#0969da"/>
+  <text x="390" y="42" text-anchor="middle">Template string</text>
+  <!-- Arrows into client -->
+  <path d="M90 56 L90 75 L240 75 L240 95" stroke="#8c959f" stroke-width="1.5" marker-end="url(#arrow3)" fill="none"/>
+  <path d="M390 56 L390 75 L240 75 L240 95" stroke="#8c959f" stroke-width="1.5" marker-end="url(#arrow3)" fill="none"/>
+  <!-- Client box -->
+  <rect x="120" y="95" width="240" height="70" rx="8" fill="#f0f4f8" stroke="#c9d1d9" filter="url(#shadow3)"/>
+  <text x="240" y="120" text-anchor="middle" font-weight="600">Client</text>
+  <rect x="160" y="128" width="160" height="28" rx="4" fill="#dafbe1" stroke="#1a7f37"/>
+  <text x="240" y="146" text-anchor="middle" font-size="12">Hydrate (one pass)</text>
+  <!-- Benefits -->
+  <text x="240" y="195" text-anchor="middle" font-size="11" fill="#57606a">Faster first paint · Fewer requests · Lower latency</text>
+  <!-- Benefit pills -->
+  <rect x="80" y="185" width="100" height="22" rx="4" fill="#eaeef2" stroke="#c9d1d9"/>
+  <text x="130" y="200" text-anchor="middle" font-size="10">Faster first paint</text>
+  <rect x="190" y="185" width="100" height="22" rx="4" fill="#eaeef2" stroke="#c9d1d9"/>
+  <text x="240" y="200" text-anchor="middle" font-size="10">Fewer requests</text>
+  <rect x="300" y="185" width="100" height="22" rx="4" fill="#eaeef2" stroke="#c9d1d9"/>
+  <text x="350" y="200" text-anchor="middle" font-size="10">Lower latency</text>
+</svg>
