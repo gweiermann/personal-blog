@@ -14,6 +14,8 @@ Our client operated a classical CMS that generated full HTML pages. Inside those
 
 As the website grew, the downsides of this architecture became more visible. Rendering happened almost entirely in the browser, which led to layout shifts and a large amount of additional HTTP requests triggered by components fetching their own data. The problem was especially noticeable on mobile devices where the client side workload became significant.
 
+![Architecture from where we come from](./current-state.svg)
+
 Server Side Rendering would solve many of these issues. The components would already be rendered inside the HTML that the browser receives, eliminating layout shifts and reducing the amount of client side work. Resources could be loaded earlier and metadata such as preload tags could be generated during rendering.
 
 Unfortunately the existing architecture made this difficult. Vue SSR normally assumes that a Node.js server renders a known application template. In our case the CMS produced fully dynamic HTML pages, so there was no static template that could be compiled ahead of time.
@@ -27,6 +29,8 @@ The key insight was that the CMS itself did not necessarily need to change. Inst
 A reverse proxy can sit in front of the CMS and intercept responses. The proxy forwards requests to the CMS, receives the generated HTML, runs a Vue SSR transformation on the page, and finally returns the transformed document to the browser.
 
 From the perspective of the CMS nothing has changed. It still produces the same HTML as before. The proxy simply post processes the output before it reaches the user.
+
+![The proposed architecture](./desired-state.svg)
 
 A proof of concept implementation of this approach is available here:
 
