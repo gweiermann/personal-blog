@@ -65,7 +65,7 @@ const featuredItems = (site.home.featuredWork ?? [])
         <div class="h-px bg-black/10"></div>
       </div>
 
-      <div class="grid grid-cols-2 gap-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
         {featuredItems.map((item, i) => {
           if (!item) return null;
           const href = item.type === 'project' ? `/projects/${item.entry.id}` : `/blog/${item.entry.id}`;
@@ -115,8 +115,8 @@ const featuredItems = (site.home.featuredWork ?? [])
           <>
             <a href={`/blog/${post.id}`} class="block group">
               <div class="flex gap-8 items-start">
-                {post.data.thumbnail && (
-                  <div class="w-28 flex-shrink-0 aspect-[4/3] overflow-hidden bg-black/5 rounded">
+                {/* {post.data.thumbnail && (
+                  <div class="w-28 flex-shrink-0 aspect-[4/3] overflow-hidden bg-black/5 rounded hidden md:block">
                     <Image
                       src={post.data.thumbnail}
                       alt=""
@@ -125,7 +125,7 @@ const featuredItems = (site.home.featuredWork ?? [])
                       sizes="112px"
                     />
                   </div>
-                )}
+                )} */}
                 <div class="flex-1 min-w-0">
                   <p class="text-xs uppercase tracking-wider text-black/40 mb-2">
                     {post.data.publishDate.toLocaleDateString('en-US', {

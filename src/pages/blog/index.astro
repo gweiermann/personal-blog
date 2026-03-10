@@ -28,8 +28,8 @@ const rest = blogPosts.slice(1);
           Featured
         </p>
         <a href={`/blog/${featured.id}`} class="group">
-          <div class="grid grid-cols-2 gap-12 items-center">
-            <div class="aspect-[3/2] bg-black/5 overflow-hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="aspect-[3/2] bg-black/5 overflow-hidden hidden md:block">
               {featured.data.thumbnail ? (
                 <Image
                   src={featured.data.thumbnail}
@@ -76,8 +76,8 @@ const rest = blogPosts.slice(1);
         {rest.map((post, index) => (
           <div>
             <a href={`/blog/${post.id}`} class="group">
-              <div class="grid grid-cols-3 gap-8 items-start">
-                <div class="aspect-[4/3] bg-black/5 overflow-hidden">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                <div class="aspect-[4/3] bg-black/5 overflow-hidden hidden md:block">
                   {post.data.thumbnail ? (
                     <Image
                       src={post.data.thumbnail}

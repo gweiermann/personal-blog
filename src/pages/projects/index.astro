@@ -24,10 +24,10 @@ const projects = (await getCollection('projects')).sort(
         <div>
           <a
             href={`/projects/${project.id}`}
-            class="group grid grid-cols-3 gap-12 items-start"
+            class="group grid grid-cols-1 md:grid-cols-3 gap-12 items-start"
           >
             <!-- Visual -->
-            <div class="aspect-[4/3] bg-black/5 overflow-hidden">
+            <div class="aspect-[4/3] bg-black/5 overflow-hidden hidden md:block">
               <div
                 class="w-full h-full group-hover:scale-105 transition-transform duration-500"
                 style={`background: linear-gradient(${45 + index * 40}deg, rgba(0,0,0,${0.03 + index * 0.015}), rgba(0,0,0,${0.08 + index * 0.015}))`}
