@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { site } from '../config/site';
+import { readTime, readTimeWithSeparator } from '../utils/readTime';
 
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
@@ -115,17 +116,6 @@ const featuredItems = (site.home.featuredWork ?? [])
           <>
             <a href={`/blog/${post.id}`} class="block group">
               <div class="flex gap-8 items-start">
-                {/* {post.data.thumbnail && (
-                  <div class="w-28 flex-shrink-0 aspect-[4/3] overflow-hidden bg-black/5 rounded hidden md:block">
-                    <Image
-                      src={post.data.thumbnail}
-                      alt=""
-                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      widths={[112, 224]}
-                      sizes="112px"
-                    />
-                  </div>
-                )} */}
                 <div class="flex-1 min-w-0">
                   <p class="text-xs uppercase tracking-wider text-black/40 mb-2">
                     {post.data.publishDate.toLocaleDateString('en-US', {
@@ -133,6 +123,9 @@ const featuredItems = (site.home.featuredWork ?? [])
                       month: 'long',
                       day: 'numeric',
                     })}
+                    <span class="text-xs uppercase tracking-wider text-black/40 flex-shrink-0 md:hidden">
+                      {readTimeWithSeparator(post)}
+                    </span>
                   </p>
                   <h4 class="text-2xl font-serif mb-3 group-hover:underline">
                     {post.data.title}
@@ -141,8 +134,8 @@ const featuredItems = (site.home.featuredWork ?? [])
                     {post.data.description}
                   </p>
                 </div>
-                <div class="text-xs uppercase tracking-wider text-black/40 flex-shrink-0">
-                  {post.data.readTimeMinutes ? `${post.data.readTimeMinutes} min read` : '—'}
+                <div class="text-xs uppercase tracking-wider text-black/40 flex-shrink-0 hidden md:block">
+                  {readTime(post)}
                 </div>
               </div>
             </a>
